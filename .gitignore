@@ -1,0 +1,4 @@
+env
+myWebApp/myWebApp/__pycache__
+myWebApp/wagha/__pycache__
+myWebApp/wagha/migrations/__pycache__
