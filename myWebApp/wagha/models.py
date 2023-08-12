@@ -16,6 +16,14 @@ class Size(models.Model):
     def __str__(self):
         return f'{self.label}'
     
+class Material(models.Model):
+    id = models.UUIDField(
+         primary_key = True,
+         default = uuid.uuid4,
+         editable = False)
+    label = models.CharField(max_length=200, default="material")
+    def __str__(self):
+        return f'{self.label}'
 
 
 class Product(models.Model):
@@ -37,6 +45,11 @@ class Product(models.Model):
             default_size, _ = Size.objects.get_or_create(label="created")
             return default_size.id
     size = models.ForeignKey(Size, on_delete=models.CASCADE, default=get_default_size  )
+    def get_default_material():
+
+            default_size, _ = Material.objects.get_or_create(label="Cotton")
+            return default_size.id
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, default=get_default_material )
 
 
 class Rating(models.Model):
@@ -63,14 +76,6 @@ class Color(models.Model):
          default = uuid.uuid4,
          editable = False)
     label = models.CharField(max_length=200, default="color")
-    def __str__(self):
-        return f'{self.label}'
-class Material(models.Model):
-    id = models.UUIDField(
-         primary_key = True,
-         default = uuid.uuid4,
-         editable = False)
-    label = models.CharField(max_length=200, default="material")
     def __str__(self):
         return f'{self.label}'
 
