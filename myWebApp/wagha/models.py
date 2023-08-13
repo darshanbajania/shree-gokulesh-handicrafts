@@ -32,7 +32,7 @@ class Product(models.Model):
          default = uuid.uuid4,
          editable = False)
     label = models.CharField(max_length=200, default="product label")
-    image = CloudinaryField('product_image', default="")
+    
     description = models.CharField(max_length=1000, default="description")
     price = models.IntegerField(default=0)
 
@@ -80,6 +80,12 @@ class Color(models.Model):
         return f'{self.label}'
 
 
-
+class Image(models.Model):
+    id = models.UUIDField(
+         primary_key = True,
+         default = uuid.uuid4,
+         editable = False)
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = CloudinaryField('product_image', default="")
 
 
