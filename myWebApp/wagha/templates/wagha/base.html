@@ -7,77 +7,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .product-card{
-        margin-right:1em
+      .product-card {
+        margin-right: 1em;
       }
-      .product-card-image-container{
-        background-color: #FBFBFB;
-        border-radius: 10px; 
-        position:relative;
+      .product-card-image-container {
+        background-color: #fbfbfb;
+        border-radius: 10px;
+        position: relative;
       }
-      .product-card-image{
+      .product-card-image {
         width: 250px;
-        height: 200px; 
+        height: 200px;
         padding: 1.5em;
       }
-      .product-card-favourite-icon{
-        position:absolute; 
-        right:10px; 
-        top:10px; 
-        border:none; 
-        background-color:transparent;
+      .product-card-favourite-icon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        border: none;
+        background-color: transparent;
       }
-      .product-card-description-container{
-        padding:15px 10px; 
+      .product-card-description-container {
+        padding: 15px 10px;
       }
-      .product-card-heading-container{
-        display: flex; 
-        justify-content: space-between; 
-        margin:0px; 
+      .product-card-heading-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 0px;
       }
-      .product-card-title{
+      .product-card-title {
         font-size: 16px;
-        margin:0;
+        margin: 0;
       }
-      .product-card-price{
-        font-size: 12px; 
-        margin:0;
+      .product-card-price {
+        font-size: 12px;
+        margin: 0;
       }
-      .product-card-size{
-        font-size: 12px; 
-        margin:0px;
+      .product-card-size {
+        font-size: 12px;
+        margin: 0px;
       }
-      .product-card-button-container{
-        display:flex; 
-        justify-content: space-between; 
-        margin:0;
+      .product-card-button-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
       }
-      .product-card-add-to-card-button{
-        border: 2px solid #7A5BFF; 
-        background-color:white; 
-        border-radius:20px; 
-        padding:5px 10px; 
-        color: #7A5BFF; 
-        width:45%;
+      .product-card-add-to-card-button {
+        border: 2px solid #7a5bff;
+        background-color: white;
+        border-radius: 20px;
+        padding: 5px 10px;
+        color: #7a5bff;
+        width: 45%;
       }
-      .product-card-add-to-card-button:hover{
-        border: 2px solid #6745ff; 
-        color: #6745ff; 
+      .product-card-add-to-card-button:hover {
+        border: 2px solid #6745ff;
+        color: #6745ff;
       }
-      .product-card-buy-now-button{
-        background-color:#7A5BFF;  
-        border-radius:20px; 
-        padding:5px 15px; 
-        border: none; 
-        color: white; 
-        width:45%;
+      .product-card-buy-now-button {
+        background-color: #7a5bff;
+        border-radius: 20px;
+        padding: 5px 15px;
+        border: none;
+        color: white;
+        width: 45%;
       }
-      .product-card-buy-now-button:hover{
-        background-color:#6745ff;  
+      .product-card-buy-now-button:hover {
+        background-color: #6745ff;
       }
-      .home-page-title{
-        color: #7A5BFF; 
-        font-size:1.5em
+      .home-page-title {
+        color: #7a5bff;
+        font-size: 1.5em;
       }
     </style>
     <link
@@ -135,7 +135,7 @@
         </div>
       </div>
     </nav>
-{% block content%}
+    {% block content%}
 
     <!-- advertisement banner -->
     <section>
@@ -151,17 +151,18 @@
     </section>
 
     <!--filter row -->
-    <section>
-      <div class="container-fluid mt-5">
-        <div class="row justify-content-between align-items-center">
-          <div class="col-2 col-sm-5">
-            <h2 class="home-page-title">Popular Products</h2>
-          </div>
-          <div class="col-2 d-flex" style="justify-content: flex-end">
-            <a href="">View All</a>
-          </div>
+    {% comment %}
+    <div class="container-fluid mt-5">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-2 col-sm-5">
+          <h2 class="home-page-title">Popular Products</h2>
+        </div>
+        <div class="col-2 d-flex" style="justify-content: flex-end">
+          <a href="">View All</a>
         </div>
       </div>
+    </div>
+    {% endcomment %}
     <!-- products lists -->
     <section>
       <div class="container-fluid mt-5">
@@ -173,15 +174,28 @@
             <a href="">View All</a>
           </div>
         </div>
-        <div class="d-flex ">
-
+        <div class="d-flex">
           {% for product in product_data %}
-            <div class="mb-4 product-card">
-            <div class="product-card-image-container" >
-              <img class="product-card-image" src="{% static 'wagha/sample_wagha.png' %}" />
-             <button class="product-card-favourite-icon">
-               <svg  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z" stroke="#EE3628" stroke-linecap="round" stroke-linejoin="round"/>
+          <div class="mb-4 product-card">
+            <div class="product-card-image-container">
+              <img
+                class="product-card-image"
+                src="{{ product.images.all.first.image.url }}"
+              />
+              <button class="product-card-favourite-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z"
+                    stroke="#EE3628"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </button>
             </div>
@@ -195,12 +209,68 @@
               </div>
             </div>
             <div class="product-card-button-container">
-              <button class="product-card-add-to-card-button" >Add to Cart</button>
-              <button class="product-card-buy-now-button" >Buy Now</button>
+              <button class="product-card-add-to-card-button">
+                Add to Cart
+              </button>
+              <button class="product-card-buy-now-button">Buy Now</button>
             </div>
           </div>
           {% endfor %}
-
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container-fluid mt-5">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-2 col-sm-5">
+            <h2 class="home-page-title">Vagha for Laddu Gopal</h2>
+          </div>
+          <div class="col-2 d-flex" style="justify-content: flex-end">
+            <a href="">View All</a>
+          </div>
+        </div>
+        <div class="d-flex">
+          {% for product in product_data %}
+          <div class="mb-4 product-card">
+            <div class="product-card-image-container">
+              <img
+                class="product-card-image"
+                src="{{ product.images.all.first.image.url }}"
+              />
+              <button class="product-card-favourite-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z"
+                    stroke="#EE3628"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="product-card-description-container">
+              <div class="product-card-heading-container">
+                <h3 class="product-card-title">{{product.label}}</h3>
+                <p class="product-card-price">₹ {{product.price}}</p>
+              </div>
+              <div style="">
+                <p class="product-card-size">Size {{product.size}}</p>
+              </div>
+            </div>
+            <div class="product-card-button-container">
+              <button class="product-card-add-to-card-button">
+                Add to Cart
+              </button>
+              <button class="product-card-buy-now-button">Buy Now</button>
+            </div>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </section>
@@ -217,4 +287,3 @@
     ></script>
   </body>
 </html>
-

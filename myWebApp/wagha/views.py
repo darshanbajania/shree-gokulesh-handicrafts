@@ -10,4 +10,6 @@ def home(request):
     context ={
         'product_data': product_data
     }
+    for product in product_data:
+        print(product.images.all().first())
     return render(request, 'wagha/base.html', context=context)

@@ -72,7 +72,8 @@ class Product(models.Model):
             return default_size.id
     material = models.ForeignKey(Material, on_delete=models.CASCADE, default=get_default_material )
     tags = models.ManyToManyField(Tag, related_name='products')
-
+    def __str__(self):
+            return f'{self.label}'
 
 class Rating(models.Model):
     id = models.UUIDField(
