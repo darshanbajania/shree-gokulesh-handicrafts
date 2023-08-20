@@ -135,6 +135,7 @@
         </div>
       </div>
     </nav>
+{% block content%}
 
     <!-- advertisement banner -->
     <section>
@@ -173,7 +174,9 @@
           </div>
         </div>
         <div class="d-flex ">
-          <div class="mb-4 product-card">
+
+          {% for product in product_data %}
+            <div class="mb-4 product-card">
             <div class="product-card-image-container" >
               <img class="product-card-image" src="{% static 'wagha/sample_wagha.png' %}" />
              <button class="product-card-favourite-icon">
@@ -184,69 +187,24 @@
             </div>
             <div class="product-card-description-container">
               <div class="product-card-heading-container">
-                <h3 class="product-card-title">Laddu Gopal Wagha</h3>
-                <p class="product-card-price">₹ 100</p>
+                <h3 class="product-card-title">{{product.label}}</h3>
+                <p class="product-card-price">₹ {{product.price}}</p>
               </div>
               <div style="">
-                <p class="product-card-size">Size 5</p>
+                <p class="product-card-size">Size {{product.size}}</p>
               </div>
             </div>
             <div class="product-card-button-container">
-              <button class="product-card-add-to-card-button">Add to Cart</button>
-              <button class="product-card-buy-now-button">Buy Now</button>
+              <button class="product-card-add-to-card-button" >Add to Cart</button>
+              <button class="product-card-buy-now-button" >Buy Now</button>
             </div>
           </div>
-          <div class="mb-4 product-card">
-            <div class="product-card-image-container" >
-              <img class="product-card-image" src="{% static 'wagha/sample_wagha.png' %}" />
-             <button class="product-card-favourite-icon">
-               <svg  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z" stroke="#EE3628" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-            <div class="product-card-description-container">
-              <div class="product-card-heading-container">
-                <h3 class="product-card-title">Laddu Gopal Wagha</h3>
-                <p class="product-card-price">₹ 100</p>
-              </div>
-              <div style="">
-                <p class="product-card-size">Size 5</p>
-              </div>
-            </div>
-            <div class="product-card-button-container">
-              <button class="product-card-add-to-card-button">Add to Cart</button>
-              <button class="product-card-buy-now-button">Buy Now</button>
-            </div>
-          </div>
-          <div class="mb-4 product-card">
-            <div class="product-card-image-container" >
-              <img class="product-card-image" src="{% static 'wagha/sample_wagha.png' %}" />
-             <button class="product-card-favourite-icon">
-               <svg  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z" stroke="#EE3628" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-            <div class="product-card-description-container">
-              <div class="product-card-heading-container">
-                <h3 class="product-card-title">Laddu Gopal Wagha</h3>
-                <p class="product-card-price">₹ 100</p>
-              </div>
-              <div style="">
-                <p class="product-card-size">Size 5</p>
-              </div>
-            </div>
-            <div class="product-card-button-container">
-              <button class="product-card-add-to-card-button">Add to Cart</button>
-              <button class="product-card-buy-now-button">Buy Now</button>
-            </div>
-          </div>
+          {% endfor %}
 
         </div>
       </div>
     </section>
-
+    {% endblock %}
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
       integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
