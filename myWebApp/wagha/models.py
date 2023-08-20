@@ -93,6 +93,15 @@ class Color(models.Model):
     label = models.CharField(max_length=200, default="color")
     def __str__(self):
         return f'{self.label}'
+class Advertisement(models.Model):
+    id = models.UUIDField(
+         primary_key = True,
+         default = uuid.uuid4,
+         editable = False)
+    image = CloudinaryField('advertisement_image', default="")
+    label = models.CharField(max_length=200, default="color")
+    def __str__(self):
+        return f'{self.label}'
 
 
 class Image(models.Model):
