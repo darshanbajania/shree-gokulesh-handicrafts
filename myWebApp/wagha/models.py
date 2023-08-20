@@ -1,9 +1,22 @@
 import uuid
 from django.db import models
 from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
 # Create your models here.
 
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,  related_name='Profile')
+    full_name = models.CharField(max_length=200, default="product label")
+    profile_pic = CloudinaryField('user_iamge', default="")
+    phone_number = models.CharField(max_length=15)
+    # Add other fields related to user profile
+
+    def __str__(self):
+        return self.user.username
+    
+    def save(self, *args, **kwargs):
+        super().save()
 
 
 class Size(models.Model):
