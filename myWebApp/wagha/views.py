@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, Advertisement
+from .models import Product, Advertisement, Color, Size, Material
 # Create your views here.
 from django.http import HttpResponse
 from django.urls import reverse
@@ -58,9 +58,15 @@ def All_products(request):
     current_product_id = request.GET.get('product')
         # print(current_product_id)
     all_products = Product.objects.all()
-    print("🚀 ~ file: views.py:39 ~ selected_product:", all_products)
+    all_colors = Color.objects.all()
+    all_sizes = Size.objects.all()
+    all_materials = Material.objects.all()
+    print("🚀 ~ file: views.py:39 ~ selected_product:", all_colors)
     context ={
         'all_products': all_products,
+        'all_colors': all_colors,
+        'all_sizes': all_sizes,
+        'all_materials': all_materials,
     }
 
     return render(request, 'wagha/all_products.html', context=context)

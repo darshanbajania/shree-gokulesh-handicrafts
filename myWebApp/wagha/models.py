@@ -25,6 +25,7 @@ class Size(models.Model):
          default = uuid.uuid4,
          editable = False)
     label = models.CharField(max_length=200, default="size")
+    value = models.IntegerField( default=0)
 
     def __str__(self):
         return f'{self.label}'
