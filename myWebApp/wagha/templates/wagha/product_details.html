@@ -24,6 +24,7 @@
     <div class="col-5">
       <div class="product-card-image-container">
         <img
+          id="main-image"
           class="product-card-image"
           src="{{ selected_product.images.all.first.image.url }}"
         />
@@ -31,7 +32,10 @@
       <div class="d-flex mt-3">
         {% for image in selected_product.images.all %}
         <div class="product-thumbnail-container">
-          <img class="product-card-thumbnail" src="{{ image.image.url }}" />
+          <img
+            class="product-card-thumbnail thumbnail"
+            src="{{ image.image.url }}"
+          />
         </div>
         {% endfor %}
       </div>
@@ -99,5 +103,17 @@
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Add a click event listener to each thumbnail image
+    $(".thumbnail").click(function () {
+      // Get the source of the clicked image
+      var newImageSrc = $(this).attr("src");
 
+      // Update the main image source
+      $("#main-image").attr("src", newImageSrc);
+    });
+  });
+</script>
 {% endblock %}
