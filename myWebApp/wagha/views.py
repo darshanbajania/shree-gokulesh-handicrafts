@@ -46,22 +46,36 @@ def Home(request):
 
 def Product_details(request):
     current_product_id = request.GET.get('product')
-        # print(current_product_id)
     selected_product = Product.objects.filter(id=current_product_id).first()
-    print("🚀 ~ file: views.py:39 ~ selected_product:", selected_product)
     context ={
         'selected_product': selected_product,
     }
 
     return render(request, 'wagha/product_details.html', context=context)
 def All_products(request):
-    current_product_id = request.GET.get('product')
         # print(current_product_id)
     all_products = Product.objects.all()
+
+    if request.method == "POST":
+            # cart_contents.clear()
+            # print(cart_contents)
+            # print(request.session['cart_contents'])
+        product_id = request.POST.get('product')
+
+        if product_id != None:
+            # getting the url for displaying full proposal
+            print(product_id)
+            base_url = reverse('wagha:product_details')
+            # creating a string of dictionary
+            query_string = urlencode({'product': product_id})
+            # passing the base_url and query from this page to url
+            url = '{}?{}'.format(base_url, query_string)
+
+            # print(proposal_number)
+            return redirect(url)
     all_colors = Color.objects.all()
     all_sizes = Size.objects.all()
     all_materials = Material.objects.all()
-    print("🚀 ~ file: views.py:39 ~ selected_product:", all_colors)
     context ={
         'all_products': all_products,
         'all_colors': all_colors,
