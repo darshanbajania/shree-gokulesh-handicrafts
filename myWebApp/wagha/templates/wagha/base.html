@@ -82,6 +82,12 @@
       .nav-item a {
         color: #7a5bff;
       }
+      .view-all-button {
+        color: #2a2c2e;
+        border: none;
+        background-color: white;
+        text-decoration: underline;
+      }
     </style>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -184,7 +190,15 @@
             <h2 class="home-page-title">Our Products</h2>
           </div>
           <div class="col-2 d-flex" style="justify-content: flex-end">
-            <a href="">View All</a>
+            <form method="POST">
+              {% csrf_token %}
+              <input
+                type="hidden"
+                name="view-all-button"
+                value="our-products"
+              />
+              <button type="submit" class="view-all-button">View All</button>
+            </form>
           </div>
         </div>
         <div class="d-flex">
@@ -246,7 +260,7 @@
             <h2 class="home-page-title">Vagha for Laddu Gopal</h2>
           </div>
           <div class="col-2 d-flex" style="justify-content: flex-end">
-            <a href="">View All</a>
+            <button class="view-all-button">View All</button>
           </div>
         </div>
         <div class="d-flex">

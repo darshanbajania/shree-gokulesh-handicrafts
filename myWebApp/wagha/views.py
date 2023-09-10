@@ -15,7 +15,18 @@ def Home(request):
             # print(cart_contents)
             # print(request.session['cart_contents'])
         product_id = request.POST.get('product')
+        view_all_type = request.POST.get('view-all-button')
         print("🚀 ~ file: views.py:17 ~ product_number:", product_id)
+        if view_all_type != None:
+            print(product_id)
+            base_url = reverse('wagha:all_products')
+            # creating a string of dictionary
+            query_string = urlencode({'product': product_id})
+            # passing the base_url and query from this page to url
+            url = '{}?{}'.format(base_url, query_string)
+
+            # print(proposal_number)
+            return redirect(url)
         if product_id != None:
             # getting the url for displaying full proposal
             print(product_id)
@@ -43,3 +54,13 @@ def Product_details(request):
     }
 
     return render(request, 'wagha/product_details.html', context=context)
+def All_products(request):
+    current_product_id = request.GET.get('product')
+        # print(current_product_id)
+    all_products = Product.objects.all()
+    print("🚀 ~ file: views.py:39 ~ selected_product:", all_products)
+    context ={
+        'all_products': all_products,
+    }
+
+    return render(request, 'wagha/all_products.html', context=context)
