@@ -201,53 +201,70 @@
             </form>
           </div>
         </div>
+
         <div class="d-flex">
           {% for product in product_data %}
           <div class="mb-4 product-card">
-            <form method="POST">
-              {% csrf_token %}
-              <input type="hidden" name="product" value="{{product.id}}" />
-
-              <div class="product-card-image-container">
-                <img
-                  class="product-card-image"
-                  src="{{ product.images.all.first.image.url }}"
+            <div class="product-card-image-container">
+              <img
+                class="product-card-image"
+                src="{{ product.images.all.first.image.url }}"
+              />
+              <button class="product-card-favourite-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z"
+                    stroke="#EE3628"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="product-card-description-container">
+              <div class="product-card-heading-container">
+                <h3 class="product-card-title">{{product.label}}</h3>
+                <p class="product-card-price">₹ {{product.price}}</p>
+              </div>
+              <div style="">
+                <p class="product-card-size">Size {{product.size}}</p>
+              </div>
+            </div>
+            <div class="product-card-button-container">
+              <form id="product-card-form" method="POST">
+                <input type="hidden" name="product" value="{{product.id}}" />
+                <input
+                  type="hidden"
+                  name="card_action_type"
+                  value="add-to-cart"
                 />
-                <button class="product-card-favourite-icon">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z"
-                      stroke="#EE3628"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div class="product-card-description-container">
-                <div class="product-card-heading-container">
-                  <h3 class="product-card-title">{{product.label}}</h3>
-                  <p class="product-card-price">₹ {{product.price}}</p>
-                </div>
-                <div style="">
-                  <p class="product-card-size">Size {{product.size}}</p>
-                </div>
-              </div>
-              <div class="product-card-button-container">
-                <button class="product-card-add-to-card-button">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="product-card-add-to-card-button add-to-cart"
+                >
                   Add to Cart
                 </button>
+              </form>
+              <form id="product-card-form" method="POST">
+                <input type="hidden" name="product" value="{{product.id}}" />
+                <input
+                  type="hidden"
+                  name="card_action_type"
+                  value="view-product"
+                />
+                {% csrf_token %}
                 <button type="submit" class="product-card-buy-now-button">
                   View
                 </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
           {% endfor %}
         </div>
@@ -317,6 +334,19 @@
         </div>
       </div>
     </section>
+
+    <script>
+      let productCardForm = document.getElementById("product-card-form");
+      document
+        .getElementsByClassName("add-to-cart")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          productCardForm.card_action_type.value = "add-to-cart";
+          alert("Button Clicked" + productCardForm.card_action_type.value);
+          productCardForm.submit();
+        });
+    </script>
+
     {% endblock %}
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
