@@ -58,7 +58,7 @@
         border-radius: 20px;
         padding: 5px 10px;
         color: #7a5bff;
-        width: 45%;
+        width: 100%;
       }
       .product-card-add-to-card-button:hover {
         border: 2px solid #6745ff;
@@ -70,7 +70,7 @@
         padding: 5px 15px;
         border: none;
         color: white;
-        width: 45%;
+        width: 100%;
       }
       .product-card-buy-now-button:hover {
         background-color: #6745ff;
@@ -87,6 +87,16 @@
         border: none;
         background-color: white;
         text-decoration: underline;
+      }
+      .cart-count {
+        position: absolute;
+        background-color: red;
+        color: white;
+        border-radius: 10px;
+        padding: 0 5px;
+        font-size: 0.8em;
+        right: -2px;
+        top: -3px;
       }
     </style>
     <link
@@ -142,7 +152,10 @@
               <a class="nav-link" href="#">Contact Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Cart</a>
+              <a class="nav-link" style="position: relative" href="#"
+                >Cart
+                <label class="cart-count"> {{ cart_items_count }} </label>
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Profile</a>
@@ -237,22 +250,30 @@
               </div>
             </div>
             <div class="product-card-button-container">
-              <form id="product-card-form" method="POST">
+              <form style="width: 45%" id="product-card-form" method="POST">
                 <input type="hidden" name="product" value="{{product.id}}" />
                 <input
                   type="hidden"
                   name="card_action_type"
                   value="add-to-cart"
                 />
-                {% csrf_token %}
+                {% csrf_token %} {% if product.in_cart %}
+                <button
+                  type="submit"
+                  class="product-card-add-to-card-button add-to-cart"
+                >
+                  Added
+                </button>
+                {% else %}
                 <button
                   type="submit"
                   class="product-card-add-to-card-button add-to-cart"
                 >
                   Add to Cart
                 </button>
+                {% endif %}
               </form>
-              <form id="product-card-form" method="POST">
+              <form style="width: 45%" id="product-card-form" method="POST">
                 <input type="hidden" name="product" value="{{product.id}}" />
                 <input
                   type="hidden"

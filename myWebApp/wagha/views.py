@@ -70,9 +70,21 @@ def Home(request):
 
             # print(proposal_number)
             return redirect(url)
+    cart_data = request.session.get('cart_data', {})
+    print("🚀 ~ file: views.py:74 ~ cart_data:", cart_data)
+    for product in product_data:
+        print("🚀 ~ file: views.py:76 ~ product:", product.id)
+        if str(product.id).strip() in cart_data:
+            print('yes')
+        else:
+            print('no')
+    for product in product_data:
+        product.in_cart = str(product.id) in cart_data
     context ={
         'product_data': product_data,
-        'banner_url':homeAdvertisementImage.image.url
+        'banner_url':homeAdvertisementImage.image.url,
+        'cart_items_count':len(request.session['cart_data']),
+        'cart_data': request.session['cart_data']
     }
     return render(request, 'wagha/base.html', context=context)
 
