@@ -1,9 +1,93 @@
 {% extends 'wagha/base.html' %} {% block content %}
 <head>
-  <style></style>
+  <style>
+    .cart-card-container {
+      border: 1px solid #7a5bff;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 1.5em;
+    }
+    .cart-image {
+      width: 8em;
+      height: 8em;
+      padding: 1em;
+      margin-right: 1em;
+    }
+    .cart-product-name {
+      color: #7a5bff;
+      font-size: 1.5em;
+    }
+    .cart-card-price-and-quantity-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-product-price {
+      font-size: 1.5 em;
+    }
+    .cart-heading {
+      font-size: 2em;
+      color: #000093;
+      margin-bottom: 2em;
+    }
+  </style>
 </head>
 <div class="container">
-  <h1>Cart</h1>
+  <h1 class="cart-heading">Cart</h1>
+  <div class="row">
+    <div class="col-lg-5">
+      {% for product in all_products %}
+
+      <div class="cart-card-container">
+        <div>
+          <img
+            class="cart-image"
+            src="https://res.cloudinary.com/darshan1999/image/upload/v1692518060/j2dggdtcxrduswwtqeub.png"
+          />
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <h3 class="cart-product-name">{{ product.label }}</h3>
+          <p>{{ product.description }}</p>
+          <div class="cart-card-price-and-quantity-container">
+            <p class="cart-product-price">₹2000</p>
+            <div>
+              <button
+                style="
+                  background-color: #7a5bff;
+                  border: none;
+                  border-radius: 5px;
+                  padding: 4px 10px;
+                  color: white;
+                "
+              >
+                +
+              </button>
+              <input placeholder="0" type="number" style="width: 3em" />
+              <button
+                style="
+                  background-color: #7a5bff;
+                  border: none;
+                  border-radius: 5px;
+                  padding: 4px 10px;
+                  color: white;
+                "
+              >
+                -
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    <div class="col-lg-3"></div>
+    <div class="col-lg-4">h1</div>
+  </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script></script>
