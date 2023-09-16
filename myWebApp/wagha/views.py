@@ -71,13 +71,6 @@ def Home(request):
             # print(proposal_number)
             return redirect(url)
     cart_data = request.session.get('cart_data', {})
-    print("🚀 ~ file: views.py:74 ~ cart_data:", cart_data)
-    for product in product_data:
-        print("🚀 ~ file: views.py:76 ~ product:", product.id)
-        if str(product.id).strip() in cart_data:
-            print('yes')
-        else:
-            print('no')
     for product in product_data:
         product.in_cart = str(product.id) in cart_data
     context ={
@@ -105,7 +98,8 @@ def All_products(request):
             # print(cart_contents)
             # print(request.session['cart_contents'])
         product_id = request.POST.get('product')
-        if product_id != None:
+        card_action_type = request.POST.get('card_action_type')
+        if card_action_type == 'view-product' and product_id != None:
             # getting the url for displaying full proposal
             print(product_id)
             base_url = reverse('wagha:product_details')
@@ -116,14 +110,30 @@ def All_products(request):
 
             # print(proposal_number)
             return redirect(url)
+        if card_action_type == 'add-to-cart' and product_id != None :
+            if(request.session.has_key('cart_data')):
+
+                cartData = request.session['cart_data']
+                print("🚀 ~ file: views.py:43 ~ cartData:", cartData)
+                cartContents = cartData
+                product = cart_product(product_id, 1)
+                serialized_product = json.dumps(product, cls=CartProductEncoder)
+                cartContents[product_id]=serialized_product
+                request.session['cart_data'] = cartContents
+                print("🚀 ~ file: views.py:37 ~ cartProduct:", cartContents)
     all_colors = Color.objects.all()
     all_sizes = Size.objects.all()
     all_materials = Material.objects.all()
+    cart_data = request.session.get('cart_data', {})
+    for product in all_products:
+        product.in_cart = str(product.id) in cart_data
     context ={
         'all_products': all_products,
         'all_colors': all_colors,
         'all_sizes': all_sizes,
         'all_materials': all_materials,
+        'cart_items_count':len(request.session['cart_data']),
+        'cart_data': request.session['cart_data']
     }
 
     return render(request, 'wagha/all_products.html', context=context)
