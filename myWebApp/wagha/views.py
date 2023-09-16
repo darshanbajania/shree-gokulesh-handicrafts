@@ -127,3 +127,31 @@ def All_products(request):
     }
 
     return render(request, 'wagha/all_products.html', context=context)
+def Cart_page(request):
+        # print(current_product_id)
+    cart_data = request.session.get('cart_data', {})
+    all_products = Product.objects.filter(id__in=cart_data)
+
+    if request.method == "POST":
+            # cart_contents.clear()
+            # print(cart_contents)
+            # print(request.session['cart_contents'])
+        product_id = request.POST.get('product')
+        if product_id != None:
+            # getting the url for displaying full proposal
+            print(product_id)
+            base_url = reverse('wagha:product_details')
+            # creating a string of dictionary
+            query_string = urlencode({'product': product_id})
+            # passing the base_url and query from this page to url
+            url = '{}?{}'.format(base_url, query_string)
+
+            # print(proposal_number)
+            return redirect(url)
+
+    context ={
+        'all_products': all_products,
+
+    }
+
+    return render(request, 'wagha/cart.html', context=context)
