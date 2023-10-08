@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from urllib.parse import urlencode
 import json
+from django.db.models import F, Value, CharField
+
 
 class cart_product:
     def __init__(self, product_id, quantity):
@@ -140,8 +142,27 @@ def All_products(request):
 def Cart_page(request):
         # print(current_product_id)
     cart_data = request.session.get('cart_data', {})
-    all_products = Product.objects.filter(id__in=cart_data)
+    # print("🚀 ~ file: views.py:144 ~ product̥_quantities:", cart_data)
 
+    all_products = Product.objects.filter(id__in=cart_data)
+    product_data = []
+    delivery_charge =75
+    total_amount=0
+    for product in all_products:
+        product_id_str = str(product.id)
+        cart_item = cart_data.get(product_id_str)
+
+        # Parse the JSON data within cart_item and retrieve the 'quantity' value
+        quantity = 0
+        if cart_item:
+            cart_item_dict = json.loads(cart_item)
+            quantity = cart_item_dict.get('quantity', 0)
+        total_amount += product.price * quantity
+        product_data.append({
+            'product': product,
+            'quantity': quantity
+        })
+        
     if request.method == "POST":
             # cart_contents.clear()
             # print(cart_contents)
@@ -161,6 +182,9 @@ def Cart_page(request):
 
     context ={
         'all_products': all_products,
+        'product_data': product_data,  # Add the combined data to the context
+        'total_amount': total_amount+delivery_charge,
+        'delivery_charge':delivery_charge
 
     }
 
