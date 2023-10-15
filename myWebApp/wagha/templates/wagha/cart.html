@@ -59,25 +59,35 @@
           <div class="cart-card-price-and-quantity-container">
             <p class="cart-product-price">₹{{ item.product.price }}</p>
             <div>
-              <button style="
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="add" value="1">
+                <input type="hidden" name="product_id" value="{{item.product.id}}">
+                <button style="
                   background-color: #7a5bff;
                   border: none;
                   border-radius: 5px;
                   padding: 4px 10px;
                   color: white;
                 ">
-                +
-              </button>
+                  +
+                </button>
+              </form>
               <input placeholder="0" value="{{item.quantity}}" type="number" style="width: 3em" />
-              <button style="
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="minus" value="1">
+                <input type="hidden" name="product_id" value="{{item.product.id}}">
+                <button style="
                   background-color: #7a5bff;
                   border: none;
                   border-radius: 5px;
                   padding: 4px 10px;
                   color: white;
                 ">
-                -
-              </button>
+                  -
+                </button>
+              </form>
             </div>
           </div>
         </div>

@@ -142,6 +142,59 @@ def All_products(request):
 def Cart_page(request):
         # print(current_product_id)
     cart_data = request.session.get('cart_data', {})
+
+    cart_contents_description = []
+    bill_description = []
+    total_amount = 0
+    if request.method == "POST":
+        if request.POST.get('add') != None:
+            item_id = request.POST.get('product_id')
+            cartContents = cart_data
+            existingItem = cart_data.get(item_id)
+            quantity = 0
+            if existingItem:
+                cart_item_dict = json.loads(existingItem)
+                quantity = cart_item_dict.get('quantity', 0)
+                product = cart_product(item_id, quantity+ 1)
+                serialized_product = json.dumps(product, cls=CartProductEncoder)
+                cartContents[item_id]=serialized_product
+                request.session['cart_data'] = cartContents
+            else:
+                
+                product = cart_product(product_id,  1)
+                serialized_product = json.dumps(product, cls=CartProductEncoder)
+                cartContents[product_id]=serialized_product
+                request.session['cart_data'] = cartContents
+        if request.POST.get('minus') != None:
+            item_id = request.POST.get('product_id')
+            # print(type(item_id))
+            # print(cart_contents.get(int(item_id)))
+            cartContents = cart_data
+            existingItem = cart_data.get(item_id)
+            quantity = 0
+            if existingItem:
+                cart_item_dict = json.loads(existingItem)
+                quantity = cart_item_dict.get('quantity', 0)
+                if(quantity >1):
+                    product = cart_product(item_id, quantity- 1)
+                    serialized_product = json.dumps(product, cls=CartProductEncoder)
+                    cartContents[item_id]=serialized_product
+                else:
+                    del cartContents[item_id]
+                    
+                request.session['cart_data'] = cartContents
+            # cart_data[item_id] = int(cart_data.get(item_id)) - 1
+            # if cart_data[item_id] == 0:
+            #     cart_data.pop(item_id)
+            #     request.session['cart_data'] = cart_data
+
+            if request.POST.get('remove') != None:
+                item_id = request.POST.get('product_id')
+                # print(type(item_id))
+                # print(cart_contents.get(int(item_id)))
+                cart_data.pop(item_id)
+                request.session['cart_contents'] = cart_data
+
     # print("🚀 ~ file: views.py:144 ~ product̥_quantities:", cart_data)
 
     all_products = Product.objects.filter(id__in=cart_data)
