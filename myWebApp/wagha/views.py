@@ -86,8 +86,71 @@ def Home(request):
 def Product_details(request):
     current_product_id = request.GET.get('product')
     selected_product = Product.objects.filter(id=current_product_id).first()
+    cart_data = request.session.get('cart_data', {})
+
+        # Parse the JSON data within cart_item and retrieve the 'quantity' value
+ 
+    if request.method == "POST":
+        product_id = current_product_id
+
+        if request.POST.get('add') != None:
+            item_id = request.POST.get('product_id')
+            cartContents = cart_data
+            existingItem = cart_data.get(item_id)
+            quantity = 0
+            print('entered add')
+            if existingItem:
+                print('entered existing item')
+
+                cart_item_dict = json.loads(existingItem)
+                quantity = cart_item_dict.get('quantity', 0)
+                product = cart_product(item_id, quantity+ 1)
+                serialized_product = json.dumps(product, cls=CartProductEncoder)
+                cartContents[item_id]=serialized_product
+                print()
+                request.session['cart_data'] = cartContents
+            else:
+                print('entered else of existing item')
+
+                product = cart_product(product_id,  1)
+                serialized_product = json.dumps(product, cls=CartProductEncoder)
+                cartContents[product_id]=serialized_product
+                print('entered else of existing item',cartContents )
+
+                request.session['cart_data'] = cartContents
+        if request.POST.get('minus') != None:
+            item_id = request.POST.get('product_id')
+            # print(type(item_id))
+            # print(cart_contents.get(int(item_id)))
+            cartContents = cart_data
+            existingItem = cart_data.get(item_id)
+            quantity = 0
+            print('entered minus')
+            if existingItem:
+                cart_item_dict = json.loads(existingItem)
+                quantity = cart_item_dict.get('quantity', 0)
+                print('entered existing item')
+                if(quantity >1):
+                    product = cart_product(item_id, quantity- 1)
+                    serialized_product = json.dumps(product, cls=CartProductEncoder)
+                    cartContents[item_id]=serialized_product
+                else:
+                    del cartContents[item_id]
+                    
+                request.session['cart_data'] = cartContents
+            # cart_data[item_id] = int(cart_data.get(item_id)) - 1
+            # if cart_data[item_id] == 0:
+            #     cart_data.pop(item_id)
+            #     request.session['cart_data'] = cart_data
+    quantity = 0
+    cart_item = cart_data.get(current_product_id)
+
+    if cart_item:
+        cart_item_dict = json.loads(cart_item)
+        quantity = cart_item_dict.get('quantity', 0)
     context ={
         'selected_product': selected_product,
+        'quantity': quantity
     }
 
     return render(request, 'wagha/product_details.html', context=context)
