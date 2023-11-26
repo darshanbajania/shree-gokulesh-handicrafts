@@ -25,83 +25,110 @@
         class="p-3 mt-5"
         style="border: 1px solid #6745ff; border-radius: 10px"
       >
-        <div>
-          <h3 class="filter-category-label">Price</h3>
+        <form id="all-filter" method="POST">
+          {% csrf_token %}
           <div>
-            <div class="d-flex justify-content-between">
-              <label>₹0</label>
-              <label>₹1000</label>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="5"
-              class="form-range"
-              id="price-range"
-            />
-          </div>
-
-          <div class="divider my-3"></div>
-
-          <div>
-            <h3 class="filter-category-label">Colors</h3>
+            <h3 class="filter-category-label">Price</h3>
             <div>
-              {% for color in all_colors %}
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  {{color.label}}
-                </label>
+              <div class="d-flex justify-content-between">
+                <label>₹0</label>
+                <label>₹1000</label>
               </div>
-              {% endfor %}
+              <input
+                type="range"
+                min="0"
+                max="5"
+                class="form-range"
+                id="price-range"
+              />
             </div>
-          </div>
-          <div class="divider my-3"></div>
 
-          <div>
-            <h3 class="filter-category-label">Size</h3>
-            <div>
-              {% for size in all_sizes %}
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  {{size.label}}
-                </label>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          <div class="divider my-3"></div>
+            <div class="divider my-3"></div>
 
-          <div>
-            <h3 class="filter-category-label">Materials</h3>
             <div>
-              {% for material in all_materials %}
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  {{material.label}}
-                </label>
+              <h3 class="filter-category-label">Colors</h3>
+              <div>
+                {% for color in all_colors %}
+                <div class="form-check">
+                  {% if color.label in selected_colors %}
+                  <input
+                    class="form-check-input color-checkbox"
+                    type="checkbox"
+                    checked
+                    name="color"
+                    value="{{ color.label }}"
+                    id="color-{{ color.label }}"
+                  />
+                  {% else %}
+                  <input
+                    class="form-check-input color-checkbox"
+                    type="checkbox"
+                    name="color"
+                    value="{{ color.label }}"
+                    id="color-{{ color.label }}"
+                  />
+                  {% endif %}
+                  <label class="form-check-label" for="color-{{ color.label }}">
+                    {{color.label}}
+                  </label>
+                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
+            </div>
+            <div class="divider my-3"></div>
+
+            <div>
+              <h3 class="filter-category-label">Size</h3>
+              <div>
+                {% for size in all_sizes %}
+                <div class="form-check">
+                  {% if size.label in selected_sizes %}
+                  <input
+                    class="form-check-input size-checkbox"
+                    type="checkbox"
+                    name="size"
+                    checked
+                    value="{{ size.label }}"
+                    id="size-{{ size.label }}"
+                  />
+                  {% else %}
+                  <input
+                    class="form-check-input size-checkbox"
+                    type="checkbox"
+                    name="size"
+                    value="{{ size.label }}"
+                    id="size-{{ size.label }}"
+                  />
+                  {% endif %}
+                  <label class="form-check-label" for="size-{{ size.label }}">
+                    {{size.label}}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="divider my-3"></div>
+
+            <div>
+              <h3 class="filter-category-label">Materials</h3>
+              <div>
+                {% for material in all_materials %}
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                  <label class="form-check-label" for="flexCheckDefault">
+                    {{material.label}}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
     <div
@@ -131,9 +158,11 @@
           </div>
         </div>
       </div>
-      <div class="d-flex row mt-5">
+      <div id="products" class="d-flex row mt-5">
         {% for product in all_products %}
-        <div class="col-lg-4">
+        <div
+          class="col-lg-4 product-card-main product-card-color-{{ product.color }} product-card-material-{{ product.material }} product-card-color-{{ product.size }}"
+        >
           <div class="mb-4 col product-card">
             <div class="product-card-image-container">
               <img
@@ -163,7 +192,7 @@
                 <p class="product-card-price">₹ {{product.price}}</p>
               </div>
               <div style="">
-                <p class="product-card-size">Size {{product.size}}</p>
+                <p class="product-card-size">Size {{product.color}}</p>
               </div>
             </div>
             <div class="product-card-button-container">
@@ -355,6 +384,82 @@
       </div>
     </div>
   </div>
-</div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const allFilterForm = document.getElementById("all-filter");
+      // const products = Array.from(
+      //   document.querySelectorAll(".product-card-main")
+      // );
 
+      // function renderProducts(filteredProducts) {
+      //   products.forEach((product) => {
+      //     product.style.display = filteredProducts.includes(product)
+      //       ? "block"
+      //       : "none";
+      //   });
+      // }
+
+      function getSelectedColors() {
+        const selectedColorCheckboxes = document.querySelectorAll(
+          ".color-checkbox:checked"
+        );
+        return Array.from(selectedColorCheckboxes).map(
+          (checkbox) => checkbox.value
+        );
+      }
+      function getSelectedSizes() {
+        const selectedColorCheckboxes = document.querySelectorAll(
+          ".color-checkbox:checked"
+        );
+        return Array.from(selectedColorCheckboxes).map(
+          (checkbox) => checkbox.value
+        );
+      }
+      console.log("adasd asdas asd asda deqqweqweq   a");
+      // function applyFilters() {
+      //   console.log("adasd asdas asda");
+      //   const selectedColors = getSelectedColors();
+      //   // const selectedMaterial = document.getElementById("material").value;
+
+      //   const filteredProducts = products.filter((product) => {
+      //     const matchesColor =
+      //       selectedColors.length === 0 ||
+      //       selectedColors.some((color) =>
+      //         product.classList.contains(`product-card-color-${color}`)
+      //       );
+      //     console.log("filtered products color", selectedColors);
+      //     // const matchesMaterial =
+      //     //   !selectedMaterial ||
+      //     //   product.classList.contains(
+      //     //     `product-card-material-${selectedMaterial}`
+      //     //   );
+
+      //     return matchesColor;
+      //   });
+      //   console.log("adasd asdas asda", filteredProducts);
+      //   renderProducts(filteredProducts);
+      // }
+      function submitColorFilterForm() {
+        const selectedColors = getSelectedColors();
+        allFilterForm.submit();
+      }
+      function submitSizeFilterForm() {
+        const selectedColors = getSelectedSizes();
+        allFilterForm.submit();
+      }
+      document.querySelectorAll(".color-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", submitColorFilterForm);
+      });
+      document.querySelectorAll(".size-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", submitSizeFilterForm);
+      });
+      // document
+      //   .getElementById("material")
+      //   .addEventListener("change", applyFilters);
+
+      // Initial rendering with all products
+      // renderProducts(products);
+    });
+  </script>
+</div>
 {% endblock %}

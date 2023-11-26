@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from urllib.parse import urlencode
 import json
-from django.db.models import F, Value, CharField
+from django.db.models import F, Value, CharField, Q
 
 
 class cart_product:
@@ -157,11 +157,14 @@ def Product_details(request):
 def All_products(request):
         # print(current_product_id)
     all_products = Product.objects.all()
-
+    selected_colors=[]
+    selected_sizes=[]
     if request.method == "POST":
             # cart_contents.clear()
             # print(cart_contents)
             # print(request.session['cart_contents'])
+        selected_colors = request.POST.getlist('color')
+        selected_sizes = request.POST.getlist('size')
         product_id = request.POST.get('product')
         card_action_type = request.POST.get('card_action_type')
         if card_action_type == 'view-product' and product_id != None:
@@ -186,6 +189,8 @@ def All_products(request):
                 cartContents[product_id]=serialized_product
                 request.session['cart_data'] = cartContents
                 print("🚀 ~ file: views.py:37 ~ cartProduct:", cartContents)
+
+    all_products =  Product.objects.all().filter(Q(color__label__in=selected_colors) | Q(size__label__in=selected_sizes)) if len(selected_colors) > 0 or len(selected_sizes) > 0 else Product.objects.all()
     all_colors = Color.objects.all()
     all_sizes = Size.objects.all()
     all_materials = Material.objects.all()
@@ -198,7 +203,9 @@ def All_products(request):
         'all_sizes': all_sizes,
         'all_materials': all_materials,
         'cart_items_count':len(request.session['cart_data']),
-        'cart_data': request.session['cart_data']
+        'cart_data': request.session['cart_data'],
+        'selected_colors':selected_colors,
+        'selected_sizes':selected_sizes
     }
 
     return render(request, 'wagha/all_products.html', context=context)

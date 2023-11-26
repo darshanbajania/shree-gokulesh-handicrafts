@@ -29,7 +29,15 @@ class Size(models.Model):
 
     def __str__(self):
         return f'{self.label}'
-    
+
+class Color(models.Model):
+    id = models.UUIDField(
+         primary_key = True,
+         default = uuid.uuid4,
+         editable = False)
+    label = models.CharField(max_length=200, default="color")
+    def __str__(self):
+        return f'{self.label}'
 class Material(models.Model):
     id = models.UUIDField(
          primary_key = True,
@@ -72,6 +80,11 @@ class Product(models.Model):
             default_size, _ = Material.objects.get_or_create(label="Cotton")
             return default_size.id
     material = models.ForeignKey(Material, on_delete=models.CASCADE, default=get_default_material )
+    def get_default_color():
+
+            default_color, _ = Color.objects.get_or_create(label="white")
+            return default_color.id
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, default=get_default_color )
     tags = models.ManyToManyField(Tag, related_name='products')
     def __str__(self):
             return f'{self.label}'
@@ -86,14 +99,6 @@ class Rating(models.Model):
         return f'{self.value}'
 
 
-class Color(models.Model):
-    id = models.UUIDField(
-         primary_key = True,
-         default = uuid.uuid4,
-         editable = False)
-    label = models.CharField(max_length=200, default="color")
-    def __str__(self):
-        return f'{self.label}'
 class Advertisement(models.Model):
     id = models.UUIDField(
          primary_key = True,
