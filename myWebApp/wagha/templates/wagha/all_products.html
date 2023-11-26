@@ -114,12 +114,24 @@
               <div>
                 {% for material in all_materials %}
                 <div class="form-check">
+                  {% if material.label in selected_materials %}
                   <input
-                    class="form-check-input"
+                    class="form-check-input material-checkbox"
                     type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
+                    checked
+                    name="material"
+                    value="{{ material.label }}"
+                    id="size-{{ material.label }}"
                   />
+                  {% else %}
+                  <input
+                    class="form-check-input material-checkbox"
+                    type="checkbox"
+                    name="material"
+                    value="{{ material.label }}"
+                    id="size-{{ material.label }}"
+                  />
+                  {% endif %}
                   <label class="form-check-label" for="flexCheckDefault">
                     {{material.label}}
                   </label>
@@ -192,153 +204,7 @@
                 <p class="product-card-price">₹ {{product.price}}</p>
               </div>
               <div style="">
-                <p class="product-card-size">Size {{product.color}}</p>
-              </div>
-            </div>
-            <div class="product-card-button-container">
-              <form style="width: 45%" id="product-card-form" method="POST">
-                <input type="hidden" name="product" value="{{product.id}}" />
-                <input
-                  type="hidden"
-                  name="card_action_type"
-                  value="add-to-cart"
-                />
-                {% csrf_token %} {% if product.in_cart %}
-                <button
-                  type="submit"
-                  class="product-card-add-to-card-button add-to-cart"
-                >
-                  Added
-                </button>
-                {% else %}
-                <button
-                  type="submit"
-                  class="product-card-add-to-card-button add-to-cart"
-                >
-                  Add to Cart
-                </button>
-                {% endif %}
-              </form>
-              <form style="width: 45%" id="product-card-form" method="POST">
-                <input type="hidden" name="product" value="{{product.id}}" />
-                <input
-                  type="hidden"
-                  name="card_action_type"
-                  value="view-product"
-                />
-                {% csrf_token %}
-                <button type="submit" class="product-card-buy-now-button">
-                  View
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-        {% endfor %} {% for product in all_products %}
-        <div class="col-lg-4">
-          <div class="mb-4 col product-card">
-            <div class="product-card-image-container">
-              <img
-                class="product-card-image"
-                src="{{ product.images.all.first.image.url }}"
-              />
-              <button class="product-card-favourite-icon">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z"
-                    stroke="#EE3628"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div class="product-card-description-container">
-              <div class="product-card-heading-container">
-                <h3 class="product-card-title">{{product.label}}</h3>
-                <p class="product-card-price">₹ {{product.price}}</p>
-              </div>
-              <div style="">
-                <p class="product-card-size">Size {{product.size}}</p>
-              </div>
-            </div>
-            <div class="product-card-button-container">
-              <form style="width: 45%" id="product-card-form" method="POST">
-                <input type="hidden" name="product" value="{{product.id}}" />
-                <input
-                  type="hidden"
-                  name="card_action_type"
-                  value="add-to-cart"
-                />
-                {% csrf_token %} {% if product.in_cart %}
-                <button
-                  type="submit"
-                  class="product-card-add-to-card-button add-to-cart"
-                >
-                  Added
-                </button>
-                {% else %}
-                <button
-                  type="submit"
-                  class="product-card-add-to-card-button add-to-cart"
-                >
-                  Add to Cart
-                </button>
-                {% endif %}
-              </form>
-              <form style="width: 45%" id="product-card-form" method="POST">
-                <input type="hidden" name="product" value="{{product.id}}" />
-                <input
-                  type="hidden"
-                  name="card_action_type"
-                  value="view-product"
-                />
-                {% csrf_token %}
-                <button type="submit" class="product-card-buy-now-button">
-                  View
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-        {% endfor %} {% for product in all_products %}
-        <div class="col-lg-4">
-          <div class="mb-4 col product-card">
-            <div class="product-card-image-container">
-              <img
-                class="product-card-image"
-                src="{{ product.images.all.first.image.url }}"
-              />
-              <button class="product-card-favourite-icon">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.05 3C3.70875 3 1 5.72607 1 9.08868C1 15.1774 8.15 20.7125 12 22C15.85 20.7125 23 15.1774 23 9.08868C23 5.72607 20.2913 3 16.95 3C14.904 3 13.0945 4.02235 12 5.58714C11.4421 4.78742 10.701 4.13476 9.83934 3.68442C8.9777 3.23407 8.02091 2.99931 7.05 3Z"
-                    stroke="#EE3628"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div class="product-card-description-container">
-              <div class="product-card-heading-container">
-                <h3 class="product-card-title">{{product.label}}</h3>
-                <p class="product-card-price">₹ {{product.price}}</p>
-              </div>
-              <div style="">
-                <p class="product-card-size">Size {{product.size}}</p>
+                <p class="product-card-size">Size {{product.material}}</p>
               </div>
             </div>
             <div class="product-card-button-container">
@@ -399,22 +265,30 @@
       //   });
       // }
 
-      function getSelectedColors() {
-        const selectedColorCheckboxes = document.querySelectorAll(
-          ".color-checkbox:checked"
-        );
-        return Array.from(selectedColorCheckboxes).map(
-          (checkbox) => checkbox.value
-        );
-      }
-      function getSelectedSizes() {
-        const selectedColorCheckboxes = document.querySelectorAll(
-          ".color-checkbox:checked"
-        );
-        return Array.from(selectedColorCheckboxes).map(
-          (checkbox) => checkbox.value
-        );
-      }
+      // function getSelectedColors() {
+      //   const selectedColorCheckboxes = document.querySelectorAll(
+      //     ".color-checkbox:checked"
+      //   );
+      //   return Array.from(selectedColorCheckboxes).map(
+      //     (checkbox) => checkbox.value
+      //   );
+      // }
+      // function getSelectedSizes() {
+      //   const selectedColorCheckboxes = document.querySelectorAll(
+      //     ".size-checkbox:checked"
+      //   );
+      //   return Array.from(selectedColorCheckboxes).map(
+      //     (checkbox) => checkbox.value
+      //   );
+      // }
+      // function getSelectedMaterials() {
+      //   const selectedColorCheckboxes = document.querySelectorAll(
+      //     ".material-checkbox:checked"
+      //   );
+      //   return Array.from(selectedColorCheckboxes).map(
+      //     (checkbox) => checkbox.value
+      //   );
+      // }
       console.log("adasd asdas asd asda deqqweqweq   a");
       // function applyFilters() {
       //   console.log("adasd asdas asda");
@@ -440,11 +314,15 @@
       //   renderProducts(filteredProducts);
       // }
       function submitColorFilterForm() {
-        const selectedColors = getSelectedColors();
+        // const selectedColors = getSelectedColors();
         allFilterForm.submit();
       }
       function submitSizeFilterForm() {
-        const selectedColors = getSelectedSizes();
+        // const selectedSizes = getSelectedSizes();
+        allFilterForm.submit();
+      }
+      function submitMaterialFilterForm() {
+        // const selectedMaterials = getSelectedMaterials();
         allFilterForm.submit();
       }
       document.querySelectorAll(".color-checkbox").forEach((checkbox) => {
@@ -452,6 +330,9 @@
       });
       document.querySelectorAll(".size-checkbox").forEach((checkbox) => {
         checkbox.addEventListener("change", submitSizeFilterForm);
+      });
+      document.querySelectorAll(".material-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", submitMaterialFilterForm);
       });
       // document
       //   .getElementById("material")
