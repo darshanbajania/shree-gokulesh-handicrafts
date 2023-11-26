@@ -161,6 +161,7 @@ def All_products(request):
     selected_sizes=[]
     selected_materials=[]
     selected_price=1000
+    sortingType='?'
     if request.method == "POST":
             # cart_contents.clear()
             # print(cart_contents)
@@ -168,7 +169,17 @@ def All_products(request):
         selected_colors = request.POST.getlist('color')
         selected_sizes = request.POST.getlist('size')
         selected_materials = request.POST.getlist('material')
-        selected_price = request.POST.get('price')
+        selected_price = request.POST.get('price') if request.POST.get('price') != None else selected_price
+
+        if request.POST.get('sort-by') != None:
+            if request.POST.get('sort-by') == 'prc-l-h':
+                sortingType='price'
+            elif request.POST.get('sort-by') == 'prc-h-l':
+                sortingType='-price'
+            elif request.POST.get('sort-by') == 'ppl-h-l':
+                sortingType='?'
+            else: 
+                 sortingType='?'
         print(selected_price)
         product_id = request.POST.get('product')
         card_action_type = request.POST.get('card_action_type')
@@ -195,7 +206,7 @@ def All_products(request):
                 request.session['cart_data'] = cartContents
                 print("🚀 ~ file: views.py:37 ~ cartProduct:", cartContents)
 
-    all_products =  Product.objects.all().filter(Q(color__label__in=selected_colors) | Q(size__label__in=selected_sizes)| Q(material__label__in=selected_materials)| Q(price__lt= int(selected_price))) if len(selected_colors) > 0 or len(selected_sizes) > 0  or len(selected_materials) > 0 or int(selected_price) > -1  else Product.objects.all()
+    all_products =  Product.objects.all().filter(Q(color__label__in=selected_colors) | Q(size__label__in=selected_sizes)| Q(material__label__in=selected_materials)| Q(price__lt= int(selected_price))).order_by(sortingType) if len(selected_colors) > 0 or len(selected_sizes) > 0  or len(selected_materials) > 0 or int(selected_price) > -1  else Product.objects.all()
     all_colors = Color.objects.all()
     all_sizes = Size.objects.all()
     all_materials = Material.objects.all()
@@ -212,7 +223,8 @@ def All_products(request):
         'selected_colors':selected_colors,
         'selected_sizes':selected_sizes,
         'selected_materials':selected_materials,
-        'selected_price':selected_price
+        'selected_price':selected_price,
+        'sortingType':sortingType
     }
 
     return render(request, 'wagha/all_products.html', context=context)
