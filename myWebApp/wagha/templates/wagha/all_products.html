@@ -37,10 +37,15 @@
               <input
                 type="range"
                 min="0"
-                max="5"
+                value="{{ selected_price }}"
+                max="1000"
+                step="100"
+                name="price"
                 class="form-range"
                 id="price-range"
+                onchange="updateTextInput(this.value);"
               />
+              <input type="text" id="textInput" value="{{ selected_price }}" />
             </div>
 
             <div class="divider my-3"></div>
@@ -251,6 +256,9 @@
     </div>
   </div>
   <script>
+    function updateTextInput(val) {
+      document.getElementById("textInput").value = val;
+    }
     document.addEventListener("DOMContentLoaded", function () {
       const allFilterForm = document.getElementById("all-filter");
       // const products = Array.from(
@@ -325,6 +333,10 @@
         // const selectedMaterials = getSelectedMaterials();
         allFilterForm.submit();
       }
+      function submitPriceFilterForm() {
+        // const selectedMaterials = getSelectedMaterials();
+        allFilterForm.submit();
+      }
       document.querySelectorAll(".color-checkbox").forEach((checkbox) => {
         checkbox.addEventListener("change", submitColorFilterForm);
       });
@@ -334,6 +346,9 @@
       document.querySelectorAll(".material-checkbox").forEach((checkbox) => {
         checkbox.addEventListener("change", submitMaterialFilterForm);
       });
+      document
+        .getElementById("price-range")
+        .addEventListener("change", submitPriceFilterForm);
       // document
       //   .getElementById("material")
       //   .addEventListener("change", applyFilters);
